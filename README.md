@@ -1,5 +1,3 @@
-# Develop Guide
-
 ## Environment Setup
 
 + Install GIT
