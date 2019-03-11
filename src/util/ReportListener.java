@@ -1,4 +1,4 @@
-package listener;  
+package util;  
   
 import java.io.File;  
 import java.io.IOException;  
@@ -14,21 +14,15 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;  
 import org.testng.TestListenerAdapter;
 
-import common.Log4jUtil;
-
 /**
  * 生成测试报告.
  * 
  * @author betty.shi
  * 
  */
-public class GenerateReport extends TestListenerAdapter{  
+public class ReportListener extends TestListenerAdapter{  
 	
-/*	  private Collection<ITestResult> m_passedTests = new ConcurrentLinkedQueue<>();
-	  private Collection<ITestResult> m_failedTests = new ConcurrentLinkedQueue<>();
-	  private Collection<ITestResult> m_skippedTests = new ConcurrentLinkedQueue<>();*/
-
-    private static String reportPath;
+	private static String reportPath;
     private static int pass = 0;
     private static int fail = 0;
     private static int skip = 0;
@@ -101,20 +95,18 @@ public class GenerateReport extends TestListenerAdapter{
   
     @Override  
     public void onTestSkipped(ITestResult result) {  
-        StringBuilder sb2 = new StringBuilder("<tr><td align=\"center\">");  
+    	//加了case失败后冲泡的方法，于是失败的case只有最后一次是faied的状态，前面几次都是skied的状态，所以去掉skipped的报告，这样虽然可能会影响到真正的skipped的case，但是如果保证setup方法不挂掉正常case是不会skipped的
+/*        StringBuilder sb2 = new StringBuilder("<tr><td align=\"center\">");  
         sb2.append((result.getMethod().getRealClass()+"."+result.getMethod().getMethodName()).substring(16));  
         sb2.append("</td><td align=\"center\"><font color=\"#DAA520\">Skipped</font><br>");
         sb2.append(result.getMethod().getMethodName());
         sb2.append("<p align=\"center\">测试用例<font color=\"red\">跳过</font></p></td>");  
-/*        sb2.append("<br><a style=\"background-color:#DAA520;\">");  
-        Throwable throwable = result.getThrowable();   
-                sb2.append(throwable.getMessage());  
-                sb2.append("</a></p></td>");  */     
+  
         long time =
                 (result.getEndMillis() - result.getStartMillis())/1000;
         sb2.append("</td><td align=\"center\">" + time + "</td></tr>");       
         s2.append(sb2);
-        skip = skip+1;
+        skip = skip+1;*/
     }  
       
     @Override  
@@ -133,22 +125,12 @@ public class GenerateReport extends TestListenerAdapter{
         	int endIndex = throwable.getMessage().indexOf("(Session info");     
             error = throwable.getMessage().substring(0, endIndex);
          }
-/*        else if(throwable.getMessage()==null)
-        {
-            error = "login faied";
-            System.out.println(error);
-
-        }*/
         else 
         {
             error = throwable.getMessage();//断言失败只打印断言
         }
         sb2.append(error);
         sb2.append("</a></p></td>");  
-       /*         sb2.append(name);
-
-        ITestNGMethod Method = result.getMethod();
-        sb2.append(Method.getMethodName());*/
         
         long time =
                 (result.getEndMillis() - result.getStartMillis())/1000;
@@ -159,8 +141,7 @@ public class GenerateReport extends TestListenerAdapter{
         String methodname = result.getMethod().getMethodName();
         TakeScreenshot shot = new TakeScreenshot();
         String screenshotPath = shot.takeScreenShot(classname, methodname);
-        screenshotPaths.add(screenshotPath);
-        
+        screenshotPaths.add(screenshotPath);       
     	}
     	catch(Exception e) {
     		//没有Throwable的时候，比如login或logout的时候挂了，exception被catch住了就没有Throwable抛出来
@@ -188,15 +169,6 @@ public class GenerateReport extends TestListenerAdapter{
   
     @Override  
     public void onFinish(ITestContext testContext) {
-/*    	XmlSuite xmls = new XmlSuite();
-    	System.out.println(xmls.getName());
-    	System.out.println(xmls.getTest());
-    	XmlTest xml = new XmlTest(xmls);
-    	xml.setName("all");
-    	System.out.println(xml.getName());*/
-    	
-/*    	String lalala = toString();
-    	System.out.println(lalala);*/
     	all = fail + pass + skip;
     	successRate = (float)pass/(float)all*100;
     	finish = new Date();
@@ -250,24 +222,6 @@ public class GenerateReport extends TestListenerAdapter{
     public static List<String> returnScreenshotPath() {   	
 		return screenshotPaths;  	
     }
-/*    public List<ITestResult> getPassedTests() {
-        return new ArrayList<>(m_passedTests);
-      }
-    public List<ITestResult> getFailedTests() {
-        return new ArrayList<>(m_failedTests);
-      }
-    public List<ITestResult> getSkippedTests() {
-        return new ArrayList<>(m_skippedTests);
-      }
-    public String toString(){
-    	return Objects.toStringHelper(getClass())
-    	        .add("passed", getPassedTests().size())
-    	        .add("failed", getFailedTests().size())
-    	        .add("skipped", getSkippedTests().size())
-    	        .toString();
-    	  
-    }
-*/
     
 }  
 

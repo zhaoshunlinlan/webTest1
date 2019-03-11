@@ -2,9 +2,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite">
 <listeners>  
-        <listener class-name="listener.GenerateReport"></listener>  
+        <listener class-name="util.ReportListener"></listener> 
+        <listener class-name="util.RetryListener"/> 
 </listeners>  
-  <test thread-count="5" name="Smoke">
+  <test thread-count="1" name="Smoke">
     <classes>
       <class name="testcases.demo.demo"/>
     </classes>	

@@ -1,7 +1,5 @@
 ## Environment Setup
 
-+ Install GIT
- * https://git-scm.com/downloads
 + Install JDK
 
  * 配置环境变量
@@ -14,11 +12,7 @@
  * https://www.eclipse.org/downloads/
 + Install testng plug-in
  * https://jingyan.baidu.com/article/86f4a73ea6116f37d6526980.html
-+ Run git and config username and email
-```
-git config --global user.name  
-git config --global user.email
-```
+
 
 + Clone and run testcases in local 
 ```

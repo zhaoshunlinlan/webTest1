@@ -1,7 +1,7 @@
-package common;
+package util;
 
-import common.BaseFunction;
-import listener.GenerateReport;
+import util.BaseFunction;
+
 import org.testng.annotations.BeforeMethod;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +24,6 @@ public class BaseTestCase extends BaseFunction implements ITest{
 	/**
 	 * 1.初始化 2. login 
 	 * @throws IOException
-	 * @author betty.shi
 	 */
 	@BeforeMethod
 	public static void setUp() throws IOException {
@@ -40,7 +39,6 @@ public class BaseTestCase extends BaseFunction implements ITest{
 	/**
 	 * 登录
 	 * @throws IOException
-	 * @author betty.shi
 	 */
 	public static void login(String account, String password) throws IOException {
 		openAnURL(getProperty("login.url", ".\\resource\\env.properties"));
@@ -96,10 +94,10 @@ public class BaseTestCase extends BaseFunction implements ITest{
 	        String to = ""; // 收件人，多个收件人以半角逗号分隔  
 	        String cc = ""; // 抄送，多个抄送以半角逗号分隔  
 	        String subject = ""; // 主题
-	        String body = GenerateReport.returnResult(); // 正文，可以用html格式的哟  
+	        String body = ReportListener.returnResult(); // 正文，可以用html格式的哟  
 	        // 附件的路径，多个附件也不怕  
-	        List<String> ReportPath = Arrays.asList(GenerateReport.returnReportPath());
-	        List<String> screenshotPath = GenerateReport.returnScreenshotPath();
+	        List<String> ReportPath = Arrays.asList(ReportListener.returnReportPath());
+	        List<String> screenshotPath = ReportListener.returnScreenshotPath();
 	        List<String> attachments = new ArrayList<String>();
 	        attachments.addAll(ReportPath);
 	        attachments.addAll(screenshotPath);
